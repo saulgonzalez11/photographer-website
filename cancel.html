@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled - Celebrate Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': {
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                        },
+                        'accent': {
+                            500: '#eab308',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-neutral-50 to-neutral-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div class="text-6xl mb-6">😔</div>
+        <h1 class="text-3xl font-bold text-neutral-800 mb-4">Payment Cancelled</h1>
+        <p class="text-neutral-600 mb-6">No worries! Your payment was cancelled and you weren't charged. Feel free to try again or contact us directly.</p>
+        
+        <div class="space-y-4">
+            <p class="text-sm text-neutral-500">
+                📧 Questions? hello@celebratecreativestudio.com<br>
+                📱 WhatsApp: +1 (787) 555-0123
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a href="index.html#shop" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-full transition-colors">
+                    Try Again
+                </a>
+                <a href="index.html#contact" class="bg-neutral-600 hover:bg-neutral-700 text-white px-6 py-3 rounded-full transition-colors">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

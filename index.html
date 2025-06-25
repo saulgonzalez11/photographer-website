@@ -78,6 +78,9 @@
     <!-- Alpine.js for interactions -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
+    <!-- Stripe JavaScript SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
     {
@@ -1427,11 +1430,86 @@
             }, 1000);
         }
 
-        // Stripe Checkout integration (mockup)
-        function checkout(packageType) {
-            // In a real implementation, this would integrate with Stripe
-            alert(`Redirecting to checkout for ${packageType} package...`);
-            // window.location.href = `https://checkout.stripe.com/pay/...`;
+        // Stripe Configuration
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE'); // Replace with your actual key
+        
+        // Package pricing (in cents)
+        const packages = {
+            wedding: {
+                price: 250000, // $2,500
+                name: 'Wedding Package'
+            },
+            elopement: {
+                price: 120000, // $1,200
+                name: 'Elopement Package'
+            },
+            tourist: {
+                price: 45000, // $450
+                name: 'Tourist Session'
+            },
+            prints: {
+                price: 2500, // $25 (starting price)
+                name: 'Fine Art Prints'
+            },
+            gift: {
+                price: 10000, // $100 (default)
+                name: 'Gift Card'
+            },
+            digital: {
+                price: 15000, // $150
+                name: 'Digital Gallery Access'
+            }
+        };
+
+        // Stripe Checkout function
+        async function checkout(packageType) {
+            const package = packages[packageType];
+            
+            if (!package) {
+                alert('Package not found!');
+                return;
+            }
+
+            try {
+                // Create checkout session
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        packageType: packageType,
+                        price: package.price,
+                        name: package.name
+                    }),
+                });
+
+                const session = await response.json();
+
+                // Redirect to Stripe Checkout
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback for demo - show manual payment instructions
+                showManualPayment(package);
+            }
+        }
+
+        // Manual payment fallback (for demo purposes)
+        function showManualPayment(package) {
+            alert(`${package.name} - $${(package.price / 100).toFixed(2)}
+            
+For payment, please contact us at:
+📧 hello@celebratecreativestudio.com
+📱 WhatsApp: +1 (787) 555-0123
+
+We'll send you a secure Stripe payment link!`);
         }
 
         // Smooth scrolling for navigation links
